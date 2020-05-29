@@ -25,7 +25,7 @@ module.exports = passport => {
             return done(null, admin);
           }
           return done(null, false);
-        })
+      })
         Karyawan.findById(jwt_payload.id)
         .then(karyawan=> {
           if (karyawan) {

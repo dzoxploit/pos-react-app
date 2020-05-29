@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const CategoryCodePromoSchema = new Schema({
-    category_code_promo_name: {
+  category_code_promo_name: {
       type: String,
       max: 100,
       required: true

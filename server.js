@@ -4,6 +4,7 @@ const app = express();
 const posts = require("./routes/api/posts");
 const profile = require("./routes/api/profile");
 const users = require("./routes/api/users");
+const cronjob = require("./routes/cron/cron");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const path = require("path");
@@ -23,8 +24,8 @@ mongoose
 app.use(passport.initialize());
 
 require("./config/passport")(passport);
-
-app.use("/api/users", users);
+app.use("/api/scheduler", cronjob);
+app.use("/api/admin", admin);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
 

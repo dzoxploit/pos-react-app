@@ -1,3 +1,4 @@
+// @ts-nocheck
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -42,45 +43,23 @@ const ProductionBarangSchema = new Schema({
       }
     }
   ],
-  description: {
-    type: String,
-    max: 255
-  },
-  jumlah_barang_siap_jual:{
+  jumlah_barang_production:{
     type: Number,
+    required: true
   },
-  jumlah_barang_reject:{
+  jumlah_barang_production_sukses:{
     type: Number,
+    required: true
   },
-  status_fixed_harga: {
-    type:Boolean,
-    required:true
-  },
-  harga_beli: {
+  jumlah_barang_production_gagal:{
     type: Number,
-    max:10,
-  },
-  harga_jual: {
-    type: Number,
-    max:10,
-  },
-  harga_promo: {
-    type: Number,
-    max:10,
+    required: true
   },
   location_gudang: {
     type: String
   },
-  status_barang: {
+  status_production_barang: {
     type: String,
-    required: true
-  },
-  tag_category: {
-    type: [String],
-    required: true
-  },
-  eficiency_bahan_baku_production: {
-    type: Float32Array,
     required: true
   },
   date: {
@@ -89,41 +68,5 @@ const ProductionBarangSchema = new Schema({
   }
 });
 
-class Barang {
-  
-      static getRec(date) {
-          return this.find({
-              recordedDate : {
-                  '$lte' :new Date(date)
-              }
-          }).exec();
-      }
-  
-      static insertBulkData(data){
-          return this.insertMany(data);
-      }
-  
-      static archiveData(date){
-          
-          return this.updateMany({
-              recordedDate : {
-                  '$lte' :new Date(date)
-              }
-          },{
-              $set : {
-                  isArchived : true
-              }
-          }).exec();
-      }
-  
-      static getArchivedData(){
-          return this.find({
-              isArchived : true
-          }).exec();
-      }
-  }
-  
-  Barangchema.loadClass(Barang);
-  
 
-module.exports = Barang = mongoose.model("barang", BarangSchema);
+module.exports = ProductionBarang = mongoose.model("production_barang", ProductionBarangSchema);

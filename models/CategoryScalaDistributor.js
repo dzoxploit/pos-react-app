@@ -2,7 +2,12 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const CategoryScalaDistributorSchema = new Schema({
-category_scala_distributor_code: {
+  admin:{
+    type: Schema.Types.ObjectId,
+    ref: "admin"
+  },
+
+  category_scala_distributor_code: {
     type: String,
     max:255,
     required: true
