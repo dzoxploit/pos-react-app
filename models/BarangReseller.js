@@ -26,10 +26,6 @@ const BarangResellerSchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: "distributor"
               },
-              count_barang:{
-                type:Boolean,
-                required: true
-              },
               created_at: {
                 type: Date,
                 default: Date.now
@@ -40,6 +36,11 @@ const BarangResellerSchema = new Schema({
               },
         },
     ],
+    },
+    status_barang_reseller:{
+      type: Schema.Types.ObjectId,
+      ref: "status_barang_reseller"
+    },
     date: {
         type: Date,
         default: Date.now

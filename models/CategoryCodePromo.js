@@ -12,11 +12,7 @@ const CategoryCodePromoSchema = new Schema({
       type: Boolean,
       required: true
     },
-    created_at: {
-      type: Date,
-      default: Date.now()
-    },
-    updated_at: {
+    date: {
       type: Date,
       default: Date.now()
     }

@@ -1,4 +1,4 @@
-# Dev View
+# Applikasi Pos App React
 
 Its a web app where user can put their details and see profiles of other developers who has also created an account on it.
 To start just sign up and as you create the account they just need to sign in and create their profile, like adding their Education,Experience,etc. 

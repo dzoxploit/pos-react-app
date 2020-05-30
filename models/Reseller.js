@@ -17,6 +17,10 @@ const ResellerSchema = new Schema({
         max: 200,
         required: true
     },
+    reseller_password: {
+        type: String,
+        required: true
+    },
     reseller_phone_number:{
         type: String,
         max: 12.
@@ -40,6 +44,10 @@ const ResellerSchema = new Schema({
         type: Boolean,
         required: false
     },
+    bukti_transfer_reseller:{
+        type: Boolean,
+        required: false,
+    }
     created_at: {
         type: Date,
         default: Date.now

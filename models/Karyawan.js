@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const KaryawanSchema = new Schema({
-  full_name_karyawan: {
+  first_name_karyawan: {
     type: String,
     max: 100,
     required: true
@@ -11,7 +11,7 @@ const KaryawanSchema = new Schema({
     type: String,
     max:100,
   },
-  alamat: {
+  alamat_karyawan: {
       type: String,
       max:255,
       required: true
@@ -21,16 +21,16 @@ const KaryawanSchema = new Schema({
       max:255,
     required:true
   },
-  username: {
+  karyawan_username: {
       type: String,
       max:100,
       required: true
   },
-  email: {
+  karyawan_email: {
     type: String,
     required: true
   },
-  password: {
+  karyawan_password: {
     type: String,
     required: true
   },

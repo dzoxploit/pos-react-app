@@ -14,39 +14,45 @@ router.get("/test", (req, res) => {
   res.json({ msg: "Users are working" });
 });
 
-router.post("/register", (req, res) => {
-  const { errors, isValid } = validateRegisterInput(req.body);
+router.post("/register-karyawan",
+passport.authenticate("jwt", { session: true }),
+(req, res) => {
+  const { errors, isValid } = validateRegisterKaryawanInput(req.body);
 
   if (!isValid) {
     return res.status(400).json(errors);
   }
 
-  User.findOne({
-    email: req.body.email
-  }).then(user => {
-    if (user) {
-      errors.email = "Email already exists";
+  Karyawan.findOne({
+    karyawan_email: req.body.karyawan_email
+  }).then(karyawan => {
+    if (karyawan) {
+      errors.karyawan_email = "Email Karyawan already exists";
       return res.status(400).json(errors);
     } else {
-      const avatar = gravatar.url(req.body.email, {
+      const avatar = gravatar.url(req.body.karyawan_email, {
         s: "200",
         r: "pg",
         d: "mm"
       });
-      const newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
+      const newKaryawan = new Karyawan({
+        first_name_karyawan: req.body.fist_name,
+        last_name_karyawan: req.body.last_name,
+        alamat_karyawan: req.body.alamat,
+        phone_number: req.body.phone_number,
+        karyawan_username: req.body.username
+        karyawan_email: req.body.email,
         avatar,
-        password: req.body.password
+        karyawan_password: req.body.password
       });
 
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
+      bcrypt.genSalt(20, (err, salt) => {
+        bcrypt.hash(newKaryawan.karyawan_password, salt, (err, hash) => {
           if (err) throw err;
-          newUser.password = hash;
-          newUser
+          newKaryawan.karyawan_password = hash;
+          newKaryawan
             .save()
-            .then(user => res.json(user))
+            .then(karyawan => res.json(karyawan))
             .catch(err => console.log(err));
         });
       });
@@ -55,29 +61,29 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/loginkaryawan", (req, res) => {
-  const { errors, isValid } = validateLoginInput(req.body);
+  const { errors, isValid } = validateLoginKaryawanInput(req.body);
 
   if (!isValid) {
     return res.status(400).json(errors);
   }
 
-  const email = req.body.email;
-  const password = req.body.password;
+  const karyawan_email = req.body.karyawan_email;
+  const karyawan_password = req.body.karyawan_password;
 
-  User.findOne({ email }).then(user => {
-    if (!user) {
-      errors.email = "User not found";
+  Karyawan.findOne({ karyawan_email }).then(karyawan=> {
+    if (!karyawan) {
+      errors.karyawan_email = "Karyawan not found";
       return res.status(404).json(errors);
     }
-    bcrypt.compare(password, user.password).then(isMatch => {
+    bcrypt.compare(karyawan_password, karyawan.karyawan_password).then(isMatch => {
       if (isMatch) {
-        const payload = {
-          id: user.id,
-          name: user.name,
-          avatar: user.avatar
+        const payloadkaryawan = {
+          id: karyawan.id,
+          name: karyawan.karyawan_name,
+          avatar: karyawan.karyawan_avatar
         };
         jwt.sign(
-          payload,
+          payloadkaryawan,
           keys.secretOrKey,
           { expiresIn: 3600 },
           (err, token) => {
@@ -88,7 +94,7 @@ router.post("/loginkaryawan", (req, res) => {
           }
         );
       } else {
-        errors.password = "Password incorrect";
+        errors.password = "Karyawan Password incorrect";
         return res.status(400).json(errors);
       }
     });
@@ -96,13 +102,13 @@ router.post("/loginkaryawan", (req, res) => {
 });
 
 router.get(
-  "/current",
+  "/current-karyawan",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     res.json({
-      id: req.user.id,
-      name: req.user.name,
-      email: req.user.email
+      id: req.karyawan.id,
+      name: req.karyawan.karyawan_name,
+      email: req.karyawan.karyawan_email
     });
   }
 );

@@ -54,29 +54,103 @@ router.get("/show/category-reseller",
   }
 );
 
-router.post(
-    "/create",
-    passport.authenticate("jwt", { session: false }),
-    (req, res) => {
-      const { errors, isValid } = validateResellerInput(req.body);
-  
-      if (!isValid) {
-        return res.status(400).json(errors);
-      }
-      const newReseller = new Reselller({
-        reseller_code: req.body.reseller_code,
-        reseller_name: req.body.reseller_name,
-        reseller_description: req.body.reseller_description,
-        category_reseller: req.body.category_reseller,
-        status: req.body.status,
-        created_at: req.body.created_at,
-        updated_at: req.body.updated_at  
+router.post("/register-karyawan",
+passport.authenticate("jwt", { session: true }),
+(req, res) => {
+  const { errors, isValid } = validateRegisterKaryawanInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  Karyawan.findOne({
+    karyawan_email: req.body.karyawan_email
+  }).then(karyawan => {
+    if (karyawan) {
+      errors.karyawan_email = "Email Karyawan already exists";
+      return res.status(400).json(errors);
+    } else {
+      const avatar = gravatar.url(req.body.karyawan_email, {
+        s: "200",
+        r: "pg",
+        d: "mm"
+      });
+      const newKaryawan = new Karyawan({
+        first_name_karyawan: req.body.fist_name,
+        last_name_karyawan: req.body.last_name,
+        alamat_karyawan: req.body.alamat,
+        phone_number: req.body.phone_number,
+        karyawan_username: req.body.username
+        karyawan_email: req.body.email,
+        avatar,
+        karyawan_password: req.body.password
       });
 
-      newReseller.save().then(reseller => res.json(reseller));
+      bcrypt.genSalt(20, (err, salt) => {
+        bcrypt.hash(newKaryawan.karyawan_password, salt, (err, hash) => {
+          if (err) throw err;
+          newKaryawan.karyawan_password = hash;
+          newKaryawan
+            .save()
+            .then(karyawan => res.json(karyawan))
+            .catch(err => console.log(err));
+        });
+      });
     }
-);
+  });
+});
+router.post("/login-reseller", (req, res) => {
+  const { errors, isValid } = validateLoginResellerInput(req.body);
 
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const reseller_email = req.body.reseller_email;
+  const reseller_password = req.body.reseller_password;
+
+  Reseller.findOne({ reseller_email }).then( reseller => {
+    if (!reseller) {
+      errors.reseller_email = "Reseller not found";
+      return res.status(404).json(errors);
+    }
+    bcrypt.compare(reseller_password, reseller.reseller_password).then(isMatch => {
+      if (isMatch) {
+        const payloadreselller = {
+          id: reseller.id,
+          name: reseller.reseller_name,
+          avatar: reseller.reseller_avatar
+        };
+        jwt.sign(
+          payloadreselller,
+          keys.secretOrKey,
+          { expiresIn: 3600 },
+          (err, token) => {
+            res.json({
+              success: true,
+              token: "Bearer " + token
+            });
+          }
+        );
+      } else {
+        errors.password = "Reseller Password incorrect";
+        return res.status(400).json(errors);
+      }
+    });
+  });
+});
+
+router.get(
+  "/current-reseller",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json({
+      id: req.reseller.id,
+      name: req.reseller.reseller_name,
+      email: req.reseller.reseller_email
+    });
+  }
+);
 router.get(
   "/edit/:id",
   passport.authenticate("jwt", { session: false }),
