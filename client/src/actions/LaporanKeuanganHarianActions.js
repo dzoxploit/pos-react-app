@@ -26,13 +26,13 @@ export const getCurrentLaporanKeuanganHarian = () => dispatch => {
             })
         );
 };
-export const getBahanBakuById = id => dispatch => {
-    dispatch(setBahanBakuLoading());
+export const getLaporanKeuanganHarianById = id => dispatch => {
+    dispatch(setLaporanKeuanganHarianLoading());
     axios
-        .get(`api/bahan-baku/edit/${id}`)
+        .get(`api/laporan-keuangan-harian/edit/${id}`)
         .then(res => 
             dispatch({
-                type: GET_DISTRIBUTOR,
+                type: GET_LAPORANKEUANGANHARIAN,
                 payload: res.data
             })
 
@@ -45,10 +45,10 @@ export const getBahanBakuById = id => dispatch => {
         );
 };
 
-export const createBahanBaku = (bahanbakuData, history) => dispatch => {
+export const createLaporanKeuanganHarian = (laporankeuanganharianData, history) => dispatch => {
     axios
-      .post("/api/bahan-baku/create", bahanbakuData)
-      .then(res => history.push("/dashboard/admin/bahan-baku"))
+      .post("/api/laporan-keuangan-harian/create", laporankeuanganharianData)
+      .then(res => history.push("/dashboard/admin/laporan-keuangan-harian"))
       .catch(err =>
         dispatch({
           type: GET_ERRORS,
@@ -56,10 +56,10 @@ export const createBahanBaku = (bahanbakuData, history) => dispatch => {
         })
       );
   };
-  export const updateBahanBaku = (id, bahanbakuData, history) => dispatch => {
+  export const updateLaporanKeuanganHarian = (id, laporankeuanganharianData, history) => dispatch => {
     axios
-      .post(`/api/bahan-baku/update/${id}`, bahanbakuData)
-      .then(res => history.push("/dashboard/admin/bahan-baku"))
+      .post(`/api/laporan-keuangan-harian/update/${id}`, laporankeuanganharianData)
+      .then(res => history.push("/dashboard/admin/laporan-keuangan-harian"))
       .catch(err =>
         dispatch({
           type: GET_ERRORS,
@@ -67,12 +67,12 @@ export const createBahanBaku = (bahanbakuData, history) => dispatch => {
         })
       );
   };
-export const deleteBahanBaku = id => dispatch => {
+export const deleteLaporanKeuanganHarian = id => dispatch => {
     axios
-      .delete(`/api/bahan-baku/delete/${id}`)
+      .delete(`/api/laporan-keuangan-harian/delete/${id}`)
       .then(res =>
         dispatch({
-          type: GET_BAHANBAKU,
+          type: GET_LAPORANKEUANGANHARIAN,
           payload: res.data
         })
       )
@@ -83,14 +83,14 @@ export const deleteBahanBaku = id => dispatch => {
         })
       );
   };
-  export const setBahanBakuLoading = () => {
+  export const setLaporanKeuanganHarianLoading = () => {
     return {
-      type: BAHANBAKU_LOADING
+      type: LAPORANKEUANGANHARIAN_LOADING
     };
   };
   
-  export const clearCurrentBahanBaku = () => {
+  export const clearCurrentLaporanKeuanganHarian = () => {
     return {
-      type: CLEAR_CURRENT_BAHANBAKU
+      type: CLEAR_CURRENT_LAPORANKEUANGANHARIAN
     };
   };

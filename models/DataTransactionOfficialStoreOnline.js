@@ -16,201 +16,33 @@ const DataTransactionOfficialStoreOnlineSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "cashier"
   },
-  detail_barang: [
+  checkout_transaction: [
     {
-      clasification_size_barang_code: {
-        type: String,
-        max:255,
-        required: true
-      },
-      clasification_size_barang_name: {
-        type: String,
-        max:255,
-        required: true
-      },
-      clasification_size_barang_stok: {
-        type: Number,
-        required: true
-      },
-      clasification_size_barang_description: {
-        type: String,
-        max:255
-      },
-      type_ukuran: [
-        {
-          type_ukuran_code:{
-            type: String,
-            max: 255,
-            required:true
-          },
-          type_ukuran_name: {
-            type:String,
-            max:100,
-            required:true
-          },
-          status_type_ukuran: {
-            type:Boolean,
-            required:true
-          },
-          date: {
-            type: Date,
-            default: Date.now
-          }
-        }
-      ]
-    }
-  ],
-  barang_masuk: [
-    {
-        barang_masuk_code: {
-            type: String,
-            max:255,  
-        },
-        barang_code: {
-          type: String,
-          max: 100,
-          required: true
-        },
-        detail_barang_bagus: [
-          {
-            detail_barang_bagus_code:{
-              type: String,
-              max:100,
-              required: true
-            },
-            barang_code: {
-              type: String,
-              max: 100,
-            },
-            status: {
-              type: Boolean,
-              required: true,
-              default: true 
-            },
-            created_at: {
-              type: Date,
-              default: Date.now
-            },
-            updated_at: {
-              type: Date,
-              default: Date.now
-            }
-          }
-        ],      
-        detail_barang_cacat: [
-          {
-          detail_barang_cacat_code:{
-            type: String,
-            max:100,
-            required: true
-          },
-          barang_code: {
-            type: String,
-            max: 100,
-          },
-          status: {
-            type: Boolean,
-            required: true,
-            default: true 
-          },
-          created_at: {
-            type: Date,
-            default: Date.now
-          },
-          updated_at: {
-            type: Date,
-            default: Date.now
-          }
-          }
-        ],
-        distributor: {
-          type: Schema.Types.ObjectId,
-          ref: "distributor"
-        },
-        count_barang_masuk: {
-          type: Boolean,
-          required: true
-        },
-        status_barang_masuk: {
-          type: Boolean,
-          required: true
-        },
-        created_at: {
-          type: Date,
-          default: Date.now()
-        },
-        updated_at: {
-          type: Date,
-          default: Date.now()
-        },
-    }
-  ],
-  barang_keluar_refurbish: [
-    {
-    barang_keluar_code: {
-        type: String,
-        max: 255,
-        required: true
-      },
-      barang_code: {
-        type: String,
-        max: 100,
-        required: true
-      },
-      distributor_pengepul: {
+      checkout: {
         type: Schema.Types.ObjectId,
-        ref: "distributor"
+        ref: "checkout_barang" 
       },
-      count_barang_keluar_refurbish:{
-        type:Boolean,
+      total_harga: {
+        type: String,
+        max:255,
         required: true
       },
-      created_at: {
-        type: Date,
-        default: Date.now
-      },
-      updated_at: {
-        type: Date,
-        default: Date.now
+      validation_pembayaran:{
+        type: Schema.Types.ObjectId,
       }
-    },
+    }
   ],
-  description: {
+  code_promo: {
     type: String,
     max: 255
   },
-  jumlah_barang_siap_jual:{
-    type: Number,
-  },
-  jumlah_barang_reject:{
-    type: Number,
-  },
-  status_fixed_harga: {
-    type:Boolean,
-    required:true
-  },
-  harga_beli: {
-    type: Number,
-    max:10,
-  },
-  harga_jual: {
-    type: Number,
-    max:10,
-  },
-  harga_promo: {
-    type: Number,
-    max:10,
-  },
-  location_gudang: {
-    type: String
-  },
-  status_barang: {
+  total_pembayaran:{
     type: String,
-    required: true
+    max: 255,
   },
-  tag_category: {
-    type: [String],
-    required: true
+  status_pembayaran:{
+    type: Boolean,
+    required: false
   },
   date: {
     type: Date,
@@ -218,7 +50,7 @@ const DataTransactionOfficialStoreOnlineSchema = new Schema({
   }
 });
 
-class Barang {
+class DataTransactionOfficialStoreOnline {
   
       static getRec(date) {
           return this.find({
@@ -252,7 +84,7 @@ class Barang {
       }
   }
   
-  Barangchema.loadClass(Barang);
+  DataTransactionOfficialStoreOnlineSchema.loadClass(DataTransactionOfficialStoreOnline);
   
 
-module.exports = Barang = mongoose.model("barang", BarangSchema);
+module.exports = DataTransactionOfficialStoreOnline = mongoose.model("DataTransactionOfficialStoreOnline", DataTransactionOfficialStoreOnlineSchema);

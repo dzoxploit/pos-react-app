@@ -18,7 +18,7 @@ module.exports = function validateCategoryInput (data) {
       errors.distributor_code = "Distributor code needs min 5 characters";
     }
     if (!Validator.isLength(data.distributor_name, { max: 200 })) {
-      errors.distributor_name = "distributor_name max 200 characters";
+      errors.distributor_name = "distribsutor_name max 200 characters";
     }
     if (!Validator.isLength(data.distributor_description, { max: 200 })) {
       errors.distributor_description = "distributor_description max 200 characters";

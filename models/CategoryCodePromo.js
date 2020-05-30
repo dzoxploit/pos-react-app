@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const CategoryCodePromoSchema = new Schema({
-    category_code_promo_name: {
+  category_code_promo_name: {
       type: String,
       max: 100,
       required: true
@@ -12,11 +12,7 @@ const CategoryCodePromoSchema = new Schema({
       type: Boolean,
       required: true
     },
-    created_at: {
-      type: Date,
-      default: Date.now()
-    },
-    updated_at: {
+    date: {
       type: Date,
       default: Date.now()
     }

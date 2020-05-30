@@ -42,7 +42,23 @@ export const getResellerById = id => dispatch => {
             })
         );
 };
-
+export const getResellerByResellerCode = reseller_code => dispatch => {
+    dispatch(setResellerLoading());
+    axios
+        .get(`api/reseller/${reseller_code}`)
+        .then(res =>
+            dispatch({
+                type: GET_RESELLERB,
+                payload: res.data
+            }) 
+        )
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: {}
+            })
+        );
+}
 export const getDetailResellerBarangByResellerCode = reseller_code => dispatch => {
     dispatch(setDetailResellerBarangLoading());
     axios
@@ -71,9 +87,9 @@ export const createDetailResellerBarang = (DetailResellerBarangData, history) =>
         })
       );
   }
-export const updateDetailResellerBarang = (id, DetailResellerBarangData, history) => dispatch => {
+export const updateDetailResellerBarang = (id, reseller_code, DetailResellerBarangData, history) => dispatch => {
     axios
-      .post(`/api/reseller/detail-reseller-barang/edit/${id}`, DetailResellerBarangData)
+      .post(`/api/reseller/detail-reseller-barang/update/${id}/${reseller_code}`, DetailResellerBarangData)
       .then(res => history.push("/dashboard/admin/reseller"))
       .catch(err =>
         dispatch({
@@ -84,10 +100,10 @@ export const updateDetailResellerBarang = (id, DetailResellerBarangData, history
   }
 
 
-export const createProductionBarang = (productionbarangData, history) => dispatch => {
+export const createReseller = (resellerData, history) => dispatch => {
     axios
-      .post("/api/production-barang", productionbarangData)
-      .then(res => history.push("/dashboard/admin/production-barang"))
+      .post("/api/reseller", resellerData)
+      .then(res => history.push("/dashboard/admin/reseller"))
       .catch(err =>
         dispatch({
           type: GET_ERRORS,
@@ -95,16 +111,38 @@ export const createProductionBarang = (productionbarangData, history) => dispatc
         })
       );
   }
-  export const addClasificationProductionBarang  = (cpbData, history) => dispatch => {
+  export const updateReseller = (id, reseller_code ,ResellerData, history) => dispatch => {
     axios
-      .post("/api/production-barang/clasification", cpbData)
-      .then(res => history.push("/dashboard/admin/production-barang"))
+      .post(`/api/reseller/reseller/update/${id}/${reseller_code}`, ResellerData)
+      .then(res => history.push("/dashboard/admin/reseller"))
       .catch(err =>
         dispatch({
           type: GET_ERRORS,
           payload: err.response.data
         })
       );
+  }
+  export const setResellerLoading = () => {
+    return {
+      type: RESELLER_LOADING
+    };
+  };
+  
+  export const clearCurrentReseller = () => {
+    return {
+      type: CLEAR_CURRENT_RESELLER
+    };
+  };
+  export const setDetailResellerBarangLoading = () => {
+    return {
+      type: DETAILRESELLERBARANG_LOADING
+    };
+  };
+  
+  export const clearCurrentDetailResellerBarang = () => {
+    return {
+      type: CLEAR_CURRENT_DETAILRESELLERBARANG
+    };
   };
   
   

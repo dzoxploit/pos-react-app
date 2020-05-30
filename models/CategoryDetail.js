@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const CategoryDetail = new Schema({
+// @ts-ignore
+const CategoryDetailSchema = new Schema({
     category_detail_code: {
         type: String,
         max: 255,
@@ -36,4 +37,5 @@ const CategoryDetail = new Schema({
         default: Date.now
       }
 });
+// @ts-ignore
 module.exports = CategoryDetail = mongoose.model("category_detail", CategorySchema);
